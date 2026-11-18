@@ -604,10 +604,12 @@ void check_reboot(void)
 					slog("Reboot is nonempty.");
 
 					/* the script can't handle the signals */
+#if 0 // prool
 					sigsetmask(sigmask(SIGUSR1) | sigmask(SIGUSR2) |
 					sigmask(SIGINT) |	sigmask(SIGPIPE) | sigmask(SIGALRM) |
 					sigmask(SIGTERM) | sigmask(SIGURG) | sigmask(SIGXCPU) |
 					sigmask(SIGHUP) |	sigmask(SIGVTALRM));
+#endif
 
 					if (system("./reboot"))
 					{

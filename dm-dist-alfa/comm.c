@@ -247,7 +247,7 @@ int game_loop(int s)
 	static struct timeval opt_time;
 	char comm[MAX_INPUT_LENGTH];
 	struct descriptor_data *point, *next_point;
-	int pulse = 0, mask;
+	int pulse = 0/*, mask*/; // prool
 
 	null_time.tv_sec = 0;
 	null_time.tv_usec = 0;
@@ -258,12 +258,12 @@ int game_loop(int s)
 
 	maxdesc = s;
 	avail_descs = getdtablesize() - 2; /* !! Change if more needed !! */
-
+#if 0 // prool
 	mask = sigmask(SIGUSR1) | sigmask(SIGUSR2) | sigmask(SIGINT) |
 		sigmask(SIGPIPE) | sigmask(SIGALRM) | sigmask(SIGTERM) |
 		sigmask(SIGURG) | sigmask(SIGXCPU) | sigmask(SIGHUP) |
 		sigmask(SIGVTALRM);
-
+#endif
 	/* Main loop */
 	while (!shutting_down)
 	{
@@ -291,7 +291,7 @@ int game_loop(int s)
 			last_time.tv_sec++;
 		}
 
-		sigsetmask(mask);
+		//sigsetmask(mask); // prool
 
 		if (select(maxdesc + 1, &input_set, &output_set, &exc_set, &null_time) 
 			< 0)
@@ -991,14 +991,14 @@ void coma(int s)
 
 	int workhours(void);
 	int load(void);
-
+#if 0 // by prool
 	slog("Entering comatose state.");
 
 	sigsetmask(sigmask(SIGUSR1) | sigmask(SIGUSR2) | sigmask(SIGINT) |
 		sigmask(SIGPIPE) | sigmask(SIGALRM) | sigmask(SIGTERM) |
 		sigmask(SIGURG) | sigmask(SIGXCPU) | sigmask(SIGHUP) |
 		sigmask(SIGVTALRM));
-
+#endif
 	while (descriptor_list)
 		close_socket(descriptor_list);
 
